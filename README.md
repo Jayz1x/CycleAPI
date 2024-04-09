@@ -1,11 +1,11 @@
-CycleAPI
-hexagonalArchitecture
+#CycleAPIDescripción del Proyecto: CRUD de Productos Prueba Tecnica Cycle
 
-Descripción del Proyecto: CRUD de Productos Prueba Tecnica Cycle
+![hexagonalArchitecture](https://github.com/Jayz1x/CycleAPI/assets/100038518/8e782dba-1f42-46a1-9f5f-837bca5e5143)
+
 
 El proyecto de CRUD de productos es una aplicación desarrollada en .NET utilizando Entity Framework Core para la capa de persistencia, Master Key para la validación de datos, Swagger para la documentación de la API y SQL Server como base de datos. Además, se ha implementado la arquitectura hexagonal para organizar y separar las responsabilidades del sistema de manera clara y mantenible.
 
-Características Principales
+**Características Principales**
 CRUD de Productos: Permite crear, leer, actualizar y eliminar productos desde una interfaz de usuario intuitiva.
 Validación con Master Key: Utiliza Master Key para validar los datos ingresados por el usuario y garantizar su integridad.
 Documentación con Swagger: La API está documentada con Swagger, lo que facilita la comprensión y el uso de los endpoints disponibles.
@@ -19,10 +19,11 @@ SQL Server: Como base de datos principal para almacenar y gestionar la informaci
 Arquitectura Hexagonal
 La aplicación sigue el patrón de arquitectura hexagonal (también conocido como puertos y adaptadores) para separar claramente las responsabilidades y capas del sistema:
 
-Dominio: Contiene las reglas de negocio y la lógica principal de la aplicación, independiente de las tecnologías externas.
-Aplicación: Implementa la lógica de aplicación utilizando los servicios del dominio y adaptándolos a los puertos de entrada y salida.
-Adaptadores: Se encargan de la integración con tecnologías externas como la base de datos, la interfaz de usuario y servicios externos.
-Rutas Protegidas
+**Dominio:** Contiene las reglas de negocio y la lógica principal de la aplicación, independiente de las tecnologías externas.
+**Aplicación:** Implementa la lógica de aplicación utilizando los servicios del dominio y adaptándolos a los puertos de entrada y salida.
+**Infraestructura:** Se encargan de la integración con tecnologías externas como la base de datos, la interfaz de usuario y servicios externos.
+
+#Rutas Protegidas
 La aplicación cuenta con algunas rutas protegidas que requieren autorización para su acceso. Las rutas protegidas son todas las operaciones CRUD excepto las siguientes:
 
 GET /api/productos: Obtener todos los productos.
