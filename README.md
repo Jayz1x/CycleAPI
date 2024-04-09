@@ -1,11 +1,7 @@
-# CycleAPI
-
-
-![hexagonalArchitecture](https://github.com/Jayz1x/CycleAPI/assets/100038518/91a7668f-9874-4dcb-bcff-cbd6fa4645a6)
-
+CycleAPI
+hexagonalArchitecture
 
 Descripción del Proyecto: CRUD de Productos Prueba Tecnica Cycle
-
 
 El proyecto de CRUD de productos es una aplicación desarrollada en .NET utilizando Entity Framework Core para la capa de persistencia, Master Key para la validación de datos, Swagger para la documentación de la API y SQL Server como base de datos. Además, se ha implementado la arquitectura hexagonal para organizar y separar las responsabilidades del sistema de manera clara y mantenible.
 
