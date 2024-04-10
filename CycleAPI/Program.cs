@@ -14,34 +14,34 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Register configuration
+// Registrar la configuración
 ConfigurationManager configuration = builder.Configuration;
 
-// Add services to the container
+// Agregar servicios al contenedor
 builder.Services.AddControllers();
 
-// Add database services
+// Agregar servicios de base de datos
 builder.Services.AddDbContext<ProductDbContext>(opt => opt.UseSqlServer(
     configuration.GetConnectionString("DefaultConnection"),
     b => b.MigrationsAssembly("CycleAPI")));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
-// Add SwaggerGen for Swagger generation
+// Agregar SwaggerGen para la generación de Swagger
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mi API", Version = "v1" });
 
-    // Add security definition for API key authentication
+    // Agregar definición de seguridad para la autenticación con clave de API
     c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
     {
         Type = SecuritySchemeType.ApiKey,
         Name = "X-API-Key",
         In = ParameterLocation.Header,
-        Description = "API Key Authentication"
+        Description = "Autenticación con clave de API"
     });
 
-    // Add security requirements for API key authentication
+    // Agregar requisitos de seguridad para la autenticación con clave de API
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -57,19 +57,31 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 
-    // Include XML comments for documentation
+    // Incluir comentarios XML para la documentación
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 });
 
-// Register authentication services
+// Registrar servicios de autenticación
 builder.Services.AddSingleton<ApiAuthorizationFilter>();
 builder.Services.AddSingleton<IApiKeyValidator, ApiKeyValidator>();
 
-// Build the application
+// Configurar política CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
+
+// Construir la aplicación
 var app = builder.Build();
 
-// Configure the HTTP request pipeline
+// Configurar el pipeline de solicitudes HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -77,13 +89,15 @@ if (app.Environment.IsDevelopment())
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mi API V1");
 
-        // Enable authentication in Swagger UI
-        c.DefaultModelsExpandDepth(-1); // Prevent expanding all models by default
+        // Habilitar autenticación en Swagger UI
+        c.DefaultModelsExpandDepth(-1); // Evitar expandir todos los modelos por defecto
     });
 }
 
-// Use authorization and map controllers
+// Usar CORS
+app.UseCors("AllowAll");
+
+// Usar autorización y mapear controladores
 app.UseAuthorization();
 app.MapControllers();
-
 app.Run();
