@@ -1,8 +1,11 @@
-﻿namespace CycleAPI.Domain
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CycleAPI.Domain
 {
     //definimos el producto con sus atributos
     public class Product
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string ? Name { get; set; }
         public int ? Price { get; set; }

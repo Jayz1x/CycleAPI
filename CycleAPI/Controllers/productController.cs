@@ -113,22 +113,6 @@ namespace CycleAPI.Controllers
                     return NotFound("Producto no encontrado");
                 }
 
-                //convertir la imagen a base64
-
-                string base64Image = Base64Converter.ConvertImageToBase64(existingProduct.Image);
-
-                if(string.IsNullOrEmpty(base64Image))
-                {
-                    return BadRequest("no se pudo convertir la imagen a base64");
-                }
-
-                existingProduct.Name = product.Name;
-                existingProduct.Price = product.Price;
-                existingProduct.Category = product.Category;
-                existingProduct.Description = product.Description;
-                existingProduct.Image = base64Image;
-                existingProduct.State = product.State;
-
                 return Ok(existingProduct);
             }catch (Exception ex)
             {

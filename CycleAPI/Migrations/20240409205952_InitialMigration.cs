@@ -1,17 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
-
 namespace CycleAPI.Migrations
 {
-    /// <inheritdoc />
     public partial class InitialMigration : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            // Crear el esquema "CATEGORIAS"
+            migrationBuilder.EnsureSchema("CATEGORIAS");
+
+            // Crear la tabla "Products" dentro del esquema "CATEGORIAS"
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "CATEGORIAS.Products",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -23,17 +23,18 @@ namespace CycleAPI.Migrations
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     State = table.Column<bool>(type: "bit", nullable: true)
                 },
+                schema: "CATEGORIAS", // Especifica el esquema aquí
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                 });
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "CATEGORIAS.Products",
+                schema: "CATEGORIAS"); // También especifica el esquema en el método Down
         }
     }
 }
