@@ -10,7 +10,7 @@ using CycleAPI.Application.Services;
 
 namespace CycleAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/products")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -91,6 +91,8 @@ namespace CycleAPI.Controllers
                     State = product.State
                 };
 
+                _service.CreateProduct(newProduct);
+
                 return Ok(newProduct);
             }
             catch (Exception ex)
@@ -100,9 +102,9 @@ namespace CycleAPI.Controllers
         }
 
         //editar los atributos del producto
-        [ApiKey] //proteger la ruta usando masterkey
+        [ApiKey] // Proteger la ruta usando masterkey
         [HttpPut("{id}")]
-        public IActionResult UpdateProduct(int id, Product product)
+        public IActionResult UpdateProduct(int id, [FromBody] Product updatedProduct)
         {
             try
             {
@@ -113,10 +115,47 @@ namespace CycleAPI.Controllers
                     return NotFound("Producto no encontrado");
                 }
 
-                return Ok(existingProduct);
-            }catch (Exception ex)
+                // Actualizar solo los campos que se enviaron en la solicitud
+                if (!string.IsNullOrEmpty(updatedProduct.Name))
+                {
+                    existingProduct.Name = updatedProduct.Name;
+                }
+
+                if (updatedProduct.Price > 0)
+                {
+                    existingProduct.Price = updatedProduct.Price;
+                }
+
+                if (!string.IsNullOrEmpty(updatedProduct.Category))
+                {
+                    existingProduct.Category = updatedProduct.Category;
+                }
+
+                if (!string.IsNullOrEmpty(updatedProduct.Description))
+                {
+                    existingProduct.Description = updatedProduct.Description;
+                }
+
+                if (!string.IsNullOrEmpty(updatedProduct.Image))
+                {
+                    existingProduct.Image = updatedProduct.Image;
+                }
+
+                if (updatedProduct.State != null) // Si State es un tipo de dato nullable
+                {
+                    existingProduct.State = updatedProduct.State;
+                }
+
+                // Utilizar el servicio para actualizar el producto en la base de datos
+                _service.UpdateProduct(existingProduct);
+
+                // Devolver una respuesta de éxito
+                return Ok("Producto actualizado correctamente");
+            }
+            catch (Exception ex)
             {
-                return StatusCode(500, new { ex.Message });
+                // Devolver un código de estado 500 en caso de error y un mensaje con el detalle del error
+                return StatusCode(500, new { message = "Error al actualizar el producto", error = ex.Message });
             }
         }
 
